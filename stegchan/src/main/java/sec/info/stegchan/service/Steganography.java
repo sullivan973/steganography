@@ -1,5 +1,6 @@
 package sec.info.stegchan.service;
 
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -15,31 +16,36 @@ public class Steganography {
      */
     public static byte[] encodeMessage(byte[] originalImage, String message) throws IllegalArgumentException{
         //convert message into byteArray
-        byte[] messageByteArr = message.getBytes();
+        char[] charArray = message.toCharArray();
+        int[] intArray = new int[charArray.length];
+        for (int i = 0; i < charArray.length; i++) {
+            intArray[i] = charArray[i];
+            System.out.print(intArray[i]);
+        }
+        System.out.println();
 
         //create new image
         byte[] modifiedImage = originalImage.clone();
 
         //check image is large enough
-        if (messageByteArr.length * 8 > originalImage.length) {
+        if (intArray.length * 8 > originalImage.length) {
             throw new IllegalArgumentException("Image not large enough");
         }
 
         //zero out least significant image bits
         for (int i = 0; i < originalImage.length; i++) {
-            originalImage[i] = (byte) (originalImage[i] & 0xFE);
+            modifiedImage[i] = (byte) (originalImage[i] & 0xFE);
         }
-
+        int imageOffset = 0;
         //iterate over message bytes
-        for (byte messageByte : messageByteArr) {
-            int add = messageByte;
-            int imageOffset = 0;
+        for (int i = 0; i < intArray.length; i++) {
+            int add = intArray[i];
 
             //iterate over bits in message byte
             for (int bit = 7; bit >= 0; bit--) {
                 //zero all bits except for one
                 int addedBit = (add >>> bit) & 1;
-                modifiedImage[imageOffset] = (byte) (originalImage[imageOffset] | addedBit);
+                modifiedImage[imageOffset] = (byte) (modifiedImage[imageOffset] | addedBit);
                 imageOffset++;
             }
         }
@@ -59,26 +65,33 @@ public class Steganography {
         Queue<Integer> bitList = new LinkedList<Integer>();
 
         //iterate over all bytes in image
-        for (byte imageByte : encodedImage) {
-            bitList.add(imageByte & 1);
+        for (int i = 0; i < encodedImage.length; i++) {
+            bitList.add(encodedImage[i] & 1);
         }
 
         //break bitList into bytes
-        List<Byte> byteList = new LinkedList<Byte>();
+        List<Integer> byteList = new LinkedList<Integer>();
         for (int i = 0; i < bitList.size(); i += 8) {
-            byte currentByte = 0;
+            int currentByte = 0;
             for (int j = 0; j < 8; j++) {
-                currentByte = (byte) ((currentByte << j) | bitList.remove());
-                byteList.add(currentByte);
+                currentByte = ((currentByte << j) | bitList.remove());
             }
+            byteList.add(currentByte);
         }
+        Integer[] array = byteList.toArray(new Integer[byteList.size()]);
+        int[] newArray = new int[array.length];
+        for (int i = 0; i < array.length; i++) {
+            newArray[i] = array[i];
+            System.out.print(newArray[i]);
+        }
+        System.out.println();
 
         //convert bytes to characters
-        for (byte charByte : byteList) {
-            if (charByte == 0) {
+        for (int i = 0; i < byteList.size(); i++) {
+            if (byteList.get(i).intValue() == 0) {
                 break;
             }
-            char currentChar = (char) charByte;
+            char currentChar = (char) byteList.get(i).intValue();
             messageBuilder.append(currentChar);
         }
 
