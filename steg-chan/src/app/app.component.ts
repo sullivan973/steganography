@@ -13,17 +13,17 @@ export class AppComponent implements OnInit {
     this.showThreadModal = false;
   }
   
-  threads = ['first', 'second'];
+  threads = [];
   ngOnInit() {
     
-    // this.apiService.getAllThreads().subscribe(
-    //   reponse => {
-    //     this.threads = reponse;
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // );
+    this.apiService.getAllThreads().subscribe(
+      reponse => {
+        this.threads = reponse;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   showNewThreadModal(value: boolean) {
