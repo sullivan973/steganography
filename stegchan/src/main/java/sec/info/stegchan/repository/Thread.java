@@ -11,8 +11,10 @@ public class Thread {
 
   private String title;
 
-  @OneToMany(mappedBy = "thread")
+  @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
   private List<Post> originalPost;
+
+  public Thread() {}
 
   public Thread(String title, List<Post> originalPost) {
     this.title = title;
