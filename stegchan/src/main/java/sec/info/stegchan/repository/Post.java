@@ -11,14 +11,16 @@ public class Post {
   private Integer postId;
 
   @Lob
-  private Byte[] stegImage;
+  private byte[] stegImage;
 
   @ManyToOne(targetEntity = Thread.class)
   @JoinColumn(name="threadId")
   @JsonIgnore
   private Thread thread;
 
-  public Post(Byte[] stegImage) {
+  public Post() {};
+
+  public Post(byte[] stegImage) {
     this.stegImage = stegImage;
   }
 
@@ -30,11 +32,11 @@ public class Post {
     this.postId = postId;
   }
 
-  public Byte[] getStegImage() {
+  public byte[] getStegImage() {
     return stegImage;
   }
 
-  public void setStegImage(Byte[] stegImage) {
+  public void setStegImage(byte[] stegImage) {
     this.stegImage = stegImage;
   }
 

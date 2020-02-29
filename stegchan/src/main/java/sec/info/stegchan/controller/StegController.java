@@ -1,13 +1,13 @@
 package sec.info.stegchan.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import sec.info.stegchan.repository.PostRepository;
-import sec.info.stegchan.repository.ThreadRepository;
+import sec.info.stegchan.model.Thumbnail;
+import sec.info.stegchan.repository.Thread;
+import sec.info.stegchan.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,27 @@ public class StegController {
   private PostRepository postRepository;
 
   @GetMapping("/threads")
-  public ResponseEntity<List<String>> getThreads() {
-    List<String> threads = new ArrayList<>();
-    threads.add("first from server");
-    threads.add("second from server");
-    threads.add("last from server");
+  public ResponseEntity<List<Thumbnail>> getThreads() {
+    List<Thumbnail> thumbnails = new ArrayList<>();
+    Iterable<Thread> threadIterator = threadRepository.findAll();
+    for (Thread thread : threadIterator) {
+      thumbnails.add(new Thumbnail(thread.getTitle(), thread.getOriginalPost().get(0).getStegImage()));
+    }
+    return ResponseEntity.ok(thumbnails);
+  }
 
-    return ResponseEntity.ok(threads);
+  @PostMapping("/create/thread")
+  public ResponseEntity createThread(@RequestBody NewThreadData newThreadData) {
+    Post post = new Post(newThreadData.getImageBinary().getBytes());
+    List<Post> postList = new ArrayList<>();
+    postList.add(post);
+
+    Thread thread = new Thread(newThreadData.getTitle(), postList);
+    post.setThread(thread);
+
+    //this should cascade and create the post as well
+    threadRepository.save(thread);
+    return ResponseEntity.status(HttpStatus.OK).body(null);
   }
 
 }
