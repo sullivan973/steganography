@@ -71,10 +71,13 @@ public class Steganography {
 
         //break bitList into bytes
         List<Integer> byteList = new LinkedList<Integer>();
-        for (int i = 0; i < bitList.size(); i += 8) {
+        while(bitList.size() > 0) {
             int currentByte = 0;
             for (int j = 0; j < 8; j++) {
-                currentByte = ((currentByte << j) | bitList.remove());
+                currentByte = ((currentByte << 1) | bitList.remove());
+                if (bitList.size() == 0) {
+                    break;
+                }
             }
             byteList.add(currentByte);
         }
