@@ -3,3 +3,15 @@ body {
   background: #ffe url(./assets/fade.png) top repeat-x;
   color: #800;
 }
+
+button.link {
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+.center {
+  margin: auto;
+  width: auto;
+  text-align: center;
+}

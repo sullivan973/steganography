@@ -6,5 +6,7 @@
   <p>The stories and information posted here are artistic works of fiction and falsehood.
     Only a fool would take anything posted here as fact.
   </p>
+  <button class="link" (click)='showNewThreadModal(true)'>[Start New Thread]</button>
+  <app-thread-modal (hideModalEvent)='showNewThreadModal($event)' *ngIf='showThreadModal'></app-thread-modal>
   <app-thread *ngFor='let title of threads' [title]=title></app-thread>
 </div>

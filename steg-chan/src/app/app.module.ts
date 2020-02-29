@@ -9,6 +9,7 @@ import { PostComponent } from './post/post.component';
 import { PostModalComponent } from './post-modal/post-modal.component';
 import { ApiService } from 'src/api-service/api-service.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ThreadModalComponent } from './thread-modal/thread-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
     ThreadComponent,
     ThreadDetailComponent,
     PostComponent,
-    PostModalComponent
+    PostModalComponent,
+    ThreadModalComponent
   ],
   imports: [
     BrowserModule,

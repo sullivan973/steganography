@@ -8,13 +8,14 @@ import { Thread } from './thread/thread';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  
-  constructor(private apiService: ApiService){}
+  showThreadModal: boolean;
+  constructor(private apiService: ApiService) {
+    this.showThreadModal = false;
+  }
   
   threads = ['first', 'second'];
   ngOnInit() {
-    var blob = new Blob();
-
+    
     // this.apiService.getAllThreads().subscribe(
     //   reponse => {
     //     this.threads = reponse;
@@ -23,5 +24,9 @@ export class AppComponent implements OnInit {
     //     console.log(err);
     //   }
     // );
+  }
+
+  showNewThreadModal(value: boolean) {
+    this.showThreadModal = value;
   }
 }
