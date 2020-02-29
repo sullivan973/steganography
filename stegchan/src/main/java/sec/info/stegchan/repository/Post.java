@@ -1,11 +1,8 @@
 package sec.info.stegchan.repository;
 
-import javassist.bytecode.ByteArray;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Post {
@@ -13,5 +10,11 @@ public class Post {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer postId;
 
-  private ByteArray stegImage;
+  @Lob
+  private Byte[] stegImage;
+
+  @ManyToOne(targetEntity = Thread.class)
+  @JoinColumn(name="threadId")
+  @JsonIgnore
+  private Thread thread;
 }

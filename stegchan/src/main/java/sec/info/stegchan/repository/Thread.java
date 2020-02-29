@@ -1,9 +1,7 @@
 package sec.info.stegchan.repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Thread {
@@ -13,5 +11,6 @@ public class Thread {
 
   private String title;
 
-  //private Post originalPost;
+  @OneToMany(mappedBy = "thread")
+  private List<Post> originalPost;
 }
