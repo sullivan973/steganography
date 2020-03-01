@@ -22,9 +22,11 @@ export class ThreadModalComponent implements OnInit {
 
   fileChange(event) {
     var reader = new FileReader()
-    reader.readAsBinaryString(event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
     reader.onloadend = () => {
       this.threadModal.imageBinary = reader.result as string;
+      //remove the dataURL prefix since the mime type is in the data
+      //this.threadModal.imageBinary = this.threadModal.imageBinary.substring(this.threadModal.imageBinary.search(',') + 1);
     };
   }
 

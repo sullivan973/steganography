@@ -4,9 +4,9 @@ import java.sql.Blob;
 
 public class Thumbnail {
   private String title;
-  private byte[] image;
+  private String image;
 
-  public Thumbnail(String title, byte[] stegImage) {
+  public Thumbnail(String title, String stegImage) {
     this.title = title;
     this.image = stegImage;
   }
@@ -19,11 +19,11 @@ public class Thumbnail {
     this.title = title;
   }
 
-  public byte[] getImage() {
+  public String getImage() {
     return image;
   }
 
-  public void setImage(byte[] image) {
+  public void setImage(String image) {
     this.image = image;
   }
 }

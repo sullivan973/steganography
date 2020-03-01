@@ -1,0 +1,15 @@
+.thread-box {
+  width: 300px;
+  height: 100px;
+  border: 2px solid black;
+  margin: auto;
+}
+
+.thread-box * {
+  display: inline;
+  float: left;
+}
+
+.title-text {
+  vertical-align: text-top;
+}

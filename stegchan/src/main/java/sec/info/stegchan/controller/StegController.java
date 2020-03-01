@@ -9,7 +9,9 @@ import sec.info.stegchan.model.Thumbnail;
 import sec.info.stegchan.repository.Thread;
 import sec.info.stegchan.repository.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,10 @@ public class StegController {
     List<Thumbnail> thumbnails = new ArrayList<>();
     Iterable<Thread> threadIterator = threadRepository.findAll();
     for (Thread thread : threadIterator) {
-      thumbnails.add(new Thumbnail(thread.getTitle(), thread.getOriginalPost().get(0).getStegImage()));
+      thumbnails.add(
+              new Thumbnail(thread.getTitle(),
+              new String(thread.getOriginalPost().get(0).getStegImage())
+      ));
     }
     return ResponseEntity.ok(thumbnails);
   }
