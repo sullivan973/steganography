@@ -9,6 +9,7 @@ import { ApiService } from 'src/api-service/api-service.service';
 })
 export class ThreadModalComponent implements OnInit {
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
+  @Output() reloadThreadsEvent: EventEmitter<boolean> = new EventEmitter();
   threadModal: ThreadModal;
   constructor(private apiService: ApiService) { }
 
@@ -24,13 +25,19 @@ export class ThreadModalComponent implements OnInit {
     var reader = new FileReader()
     reader.readAsDataURL(event.target.files[0]);
     reader.onloadend = () => {
-      this.threadModal.imageBinary = reader.result as string;
-      //remove the dataURL prefix since the mime type is in the data
-      //this.threadModal.imageBinary = this.threadModal.imageBinary.substring(this.threadModal.imageBinary.search(',') + 1);
+      this.threadModal.imageBase64DataUrl = reader.result as string;
     };
   }
 
   onSubmit() {
-    this.apiService.createNewThread(this.threadModal).subscribe();
+    this.apiService.createNewThread(this.threadModal).subscribe(
+      () => {
+        this.reloadThreadsEvent.emit(true);
+        this.hideModalEvent.emit(false);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }

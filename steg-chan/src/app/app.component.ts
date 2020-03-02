@@ -15,10 +15,13 @@ export class AppComponent implements OnInit {
   
   threads = [];
   ngOnInit() {
-    
+    this.reloadThreads();
+  }
+
+  reloadThreads() {
     this.apiService.getAllThreads().subscribe(
-      reponse => {
-        this.threads = reponse;
+      response => {
+        this.threads = response;
       },
       err => {
         console.log(err);

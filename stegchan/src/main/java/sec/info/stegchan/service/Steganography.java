@@ -34,8 +34,8 @@ public class Steganography {
             throw new IllegalArgumentException("Image not large enough");
         }
 
-        //zero out least significant image bits
-        for (int i = 0; i < originalImage.length; i++) {
+        //zero out least significant image bits for message size plus null
+        for (int i = 0; i < intArray.length * 8 + 8; i++) {
             originalImage[i] = (byte) (originalImage[i] & 0xFE);
         }
         int imageOffset = 0;
