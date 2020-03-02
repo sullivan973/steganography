@@ -98,6 +98,7 @@ public class Steganography {
             messageBuilder.append(currentChar);
         }
 
+        System.out.println("\nDecoded message: " + messageBuilder.toString());
         return messageBuilder.toString();
     }
 }
