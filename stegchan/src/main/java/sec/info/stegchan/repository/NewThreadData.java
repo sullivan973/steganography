@@ -3,13 +3,13 @@ package sec.info.stegchan.repository;
 public class NewThreadData {
   private String title;
   private String message;
-  private String imageBinary;
+  private String imageBase64DataUrl;
 
   public NewThreadData() {}
-  public NewThreadData(String title, String message, String imageBinary) {
+  public NewThreadData(String title, String message, String imageBase64DataUrl) {
     this.title = title;
     this.message = message;
-    this.imageBinary = imageBinary;
+    this.imageBase64DataUrl = imageBase64DataUrl;
   }
 
   public String getTitle() {
@@ -28,11 +28,11 @@ public class NewThreadData {
     this.message = message;
   }
 
-  public String getImageBinary() {
-    return imageBinary;
+  public String getImageBase64DataUrl() {
+    return imageBase64DataUrl;
   }
 
-  public void setImageBinary(String imageBinary) {
-    this.imageBinary = imageBinary;
+  public void setImageBase64DataUrl(String imageBase64DataUrl) {
+    this.imageBase64DataUrl = imageBase64DataUrl;
   }
 }

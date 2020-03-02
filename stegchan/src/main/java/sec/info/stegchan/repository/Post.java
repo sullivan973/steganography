@@ -13,6 +13,8 @@ public class Post {
   @Lob
   private byte[] stegImage;
 
+  private String imageType;
+
   @ManyToOne(targetEntity = Thread.class)
   @JoinColumn(name="threadId")
   @JsonIgnore
@@ -20,8 +22,9 @@ public class Post {
 
   public Post() {};
 
-  public Post(byte[] stegImage) {
+  public Post(byte[] stegImage, String imageType) {
     this.stegImage = stegImage;
+    this.imageType = imageType;
   }
 
   public Integer getPostId() {
@@ -46,5 +49,13 @@ public class Post {
 
   public void setThread(Thread thread) {
     this.thread = thread;
+  }
+
+  public String getImageType() {
+    return imageType;
+  }
+
+  public void setImageType(String imageType) {
+    this.imageType = imageType;
   }
 }
