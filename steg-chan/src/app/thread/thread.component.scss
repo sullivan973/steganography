@@ -1,15 +1,19 @@
 .thread-box {
-  width: 300px;
+  width: 500px;
   height: 100px;
-  border: 2px solid black;
+  border: 1px solid #800;
   margin: auto;
+  margin-bottom: 1em;
 }
 
 .thread-box * {
-  display: inline;
   float: left;
+  padding: 5px;
 }
 
 .title-text {
   vertical-align: text-top;
+  width: 350px;
+  overflow-wrap: break-word;
+  text-align: left;
 }

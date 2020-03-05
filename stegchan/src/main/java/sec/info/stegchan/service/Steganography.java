@@ -1,5 +1,7 @@
 package sec.info.stegchan.service;
 
+import org.springframework.util.Base64Utils;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import sec.info.stegchan.model.ThreadDetail;
 import sec.info.stegchan.model.Thumbnail;
 import sec.info.stegchan.repository.Thread;
 import sec.info.stegchan.repository.*;
@@ -15,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @EnableWebMvc
@@ -32,9 +34,7 @@ public class StegController {
     for (Thread thread : threadIterator) {
       Post post = thread.getPostList().get(0);
       thumbnails.add(
-              new Thumbnail(thread.getTitle(),
-              "data:image/" + post.getImageType() + ";base64," + Base64Utils.encodeToString(post.getStegImage()),
-              thread.getThreadId()
+              new Thumbnail(thread.getTitle(), Post.postToBase64URL(post), thread.getThreadId()
       ));
       //for debug purposes
       BufferedImage image = Steganography.createBufferedImage(thread.getPostList().get(0).getStegImage());
@@ -74,5 +74,25 @@ public class StegController {
       e.printStackTrace();
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+  }
+
+  //Returns the list of posts for thread with threadId = id
+  //includes post id, the title for the first post, and the encoded image
+  @GetMapping("/thread/{id}")
+  public ResponseEntity getThreadDetails (@PathVariable("id") int id) {
+    Optional<Thread> threadOptional = threadRepository.findById(id);
+    //if found in database
+    if(threadOptional.isPresent()) {
+      //pack the posts into a list of images with post id
+      List<ThreadDetail> threadDetails = new ArrayList<>();
+      List<Post> postList = threadOptional.get().getPostList();
+      for (Post post: postList) {
+        threadDetails.add(new ThreadDetail(null, Post.postToBase64URL(post), post.getPostId()));
+      }
+      //add title into the first post for header post
+      threadDetails.get(0).setTitle(threadOptional.get().getTitle());
+      return ResponseEntity.status(HttpStatus.OK).body(threadDetails);
+    }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Thread with id: " + id + " was not found.");
   }
 }

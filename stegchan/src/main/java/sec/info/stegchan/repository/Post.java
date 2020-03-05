@@ -1,6 +1,7 @@
 package sec.info.stegchan.repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.*;
 
@@ -57,5 +58,9 @@ public class Post {
 
   public void setImageType(String imageType) {
     this.imageType = imageType;
+  }
+
+  public static String postToBase64URL(Post post) {
+    return "data:image/" + post.getImageType() + ";base64," + Base64Utils.encodeToString(post.getStegImage());
   }
 }
