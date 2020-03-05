@@ -12,13 +12,13 @@ public class Thread {
   private String title;
 
   @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
-  private List<Post> originalPost;
+  private List<Post> postList;
 
   public Thread() {}
 
-  public Thread(String title, List<Post> originalPost) {
+  public Thread(String title, List<Post> postList) {
     this.title = title;
-    this.originalPost = originalPost;
+    this.postList = postList;
   }
 
   public Integer getThreadId() {
@@ -37,11 +37,11 @@ public class Thread {
     this.title = title;
   }
 
-  public List<Post> getOriginalPost() {
-    return originalPost;
+  public List<Post> getPostList() {
+    return postList;
   }
 
-  public void setOriginalPost(List<Post> originalPost) {
-    this.originalPost = originalPost;
+  public void setPostList(List<Post> postList) {
+    this.postList = postList;
   }
 }

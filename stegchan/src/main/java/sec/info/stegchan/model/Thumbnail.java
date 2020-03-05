@@ -5,10 +5,12 @@ import java.sql.Blob;
 public class Thumbnail {
   private String title;
   private String image;
+  private int threadId;
 
-  public Thumbnail(String title, String stegImage) {
+  public Thumbnail(String title, String stegImage, int threadId) {
     this.title = title;
     this.image = stegImage;
+    this.threadId = threadId;
   }
 
   public String getTitle() {
@@ -25,5 +27,13 @@ public class Thumbnail {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public int getThreadId() {
+    return threadId;
+  }
+
+  public void setThreadId(int threadId) {
+    this.threadId = threadId;
   }
 }
