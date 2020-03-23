@@ -1,4 +1,4 @@
-export class ThreadModal {
+export class ThreadData {
 
   constructor(
     public title?: string,

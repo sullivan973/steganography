@@ -1,1 +1,10 @@
-<p>thread-detail works!</p>
+<div class='center'>
+  <div class='inline-items'>
+    <img [src]="postList[0].image" height=90 width=90/>
+    <h3 class='title-text'>{{postList[0].title}}</h3>
+  </div>
+  <button class="link" (click)='showNewThreadModal(true)'>[Create New Post]</button>
+  <button class="link" routerLink="">[Back To Home Page]</button>
+  <!-- <app-thread-modal (reloadThreadsEvent)='reloadThreads()' (hideModalEvent)='showNewThreadModal($event)' *ngIf='showThreadModal'></app-thread-modal> -->
+  <app-post *ngFor='let post of postList | slice:1' [postData]=post></app-post>
+</div>

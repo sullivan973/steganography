@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ThreadModal } from './thread-modal';
+import { ThreadData } from './thread-data';
 import { ApiService } from 'src/api-service/api-service.service';
 
 @Component({
@@ -10,11 +10,11 @@ import { ApiService } from 'src/api-service/api-service.service';
 export class ThreadModalComponent implements OnInit {
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
   @Output() reloadThreadsEvent: EventEmitter<boolean> = new EventEmitter();
-  threadModal: ThreadModal;
+  threadModal: ThreadData;
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
-    this.threadModal = new ThreadModal();
+    this.threadModal = new ThreadData();
   }
 
   hideModal() {

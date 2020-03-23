@@ -1,4 +1,6 @@
-<div class="thread-box">
+<div class="thread-box" [routerLink]="['/thread-detail', threadData.threadId]">
   <img [src]="threadData.image" height=90 width=90/>
-  <h3 class="title-text">{{threadData.title}}</h3>
+  <div class="title-text">
+    <h3>{{threadData.title}}</h3>
+  </div>
 </div>

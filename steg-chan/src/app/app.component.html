@@ -1,12 +1,1 @@
-<div class='center'>
-  <div class='inline-items'>
-    <img src='../assets/steg.png' width='100' height='100'/>
-    <p class='title-text'>Stegchan</p>
-  </div>
-  <p>The images posted here are artistic works of fiction and falsehood.
-    Only a fool would take anything posted here as fact.
-  </p>
-  <button class="link" (click)='showNewThreadModal(true)'>[Start New Thread]</button>
-  <app-thread-modal (reloadThreadsEvent)='reloadThreads()' (hideModalEvent)='showNewThreadModal($event)' *ngIf='showThreadModal'></app-thread-modal>
-  <app-thread *ngFor='let thread of threads' [threadData]=thread></app-thread>
-</div>
+<router-outlet></router-outlet>
