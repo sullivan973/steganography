@@ -135,4 +135,39 @@ public class Steganography {
         ImageIO.write(image, format, bos );
         return bos.toByteArray();
     }
+
+    public static String vigenereEncode(String key, String message) {
+        char[] keyArray = key.toCharArray();
+        StringBuilder encodedMessage = new StringBuilder();
+        for (int i = 0; i < message.length(); i++) {
+            char messageChar = message.charAt(i);
+            if (Character.isAlphabetic(messageChar)) {
+                int keyNum = i % keyArray.length;
+                int keyShift = ((int) keyArray[keyNum]) - 65;
+                char newChar = (char) ((((int) Character.toUpperCase(messageChar) + keyShift - 65) % 26) + 65);
+                encodedMessage.append(Character.isUpperCase(messageChar) ? newChar : Character.toLowerCase(newChar));
+            } else {
+                encodedMessage.append(messageChar);
+            }
+
+        }
+        return encodedMessage.toString();
+    }
+
+    public static String vigenereDecode(String key, String encoded) {
+        char[] keyArray = key.toCharArray();
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i < encoded.length(); i++) {
+            char encodedChar = encoded.charAt(i);
+            if (Character.isAlphabetic(encodedChar)) {
+                int keyNum = i % keyArray.length;
+                int keyShift = ((int) keyArray[keyNum]) - 65;
+                char newChar = (char) ((((int) Character.toUpperCase(encodedChar) - keyShift + 26 - 65) % 26) + 65);
+                message.append(Character.isUpperCase(encodedChar) ? newChar : Character.toLowerCase(newChar));
+            } else {
+                message.append(encodedChar);
+            }
+        }
+        return message.toString();
+    }
 }

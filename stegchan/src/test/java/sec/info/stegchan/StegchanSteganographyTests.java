@@ -52,4 +52,18 @@ class StegchanSteganographyTests {
             assertNull(e);
         }
     }
+
+    @Test
+    void vigenereEncodeTest() {
+        String message = "This is a test message.";
+        String encoded = Steganography.vigenereEncode("TESTKEY", message);
+        assertEquals("Mlal mq e mowr qwlceex.", encoded);
+    }
+
+    @Test
+    void vigenereDecodeTest() {
+        String message = "Mlal mq e mowr qwlceex.";
+        String decoded = Steganography.vigenereDecode("TESTKEY", message);
+        assertEquals("This is a test message.", decoded);
+    }
 }
