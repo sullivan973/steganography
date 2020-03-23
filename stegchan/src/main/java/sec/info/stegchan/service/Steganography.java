@@ -13,6 +13,24 @@ import java.util.Queue;
 public class Steganography {
 
     /**
+     * Wrapper around Steg class. Embeds message into base64 image
+     * @param base64Image base64 original image to be encoded
+     * @param message message to be embedded in image
+     * @param imageType image type for used for compression
+     * @return byte array blob of the encoded image to be saved in the database
+     */
+    public static byte[] encodeBase64(String base64Image, String message, String imageType) throws IOException {
+        //turn base64 data into binary
+        byte[] imageBinary = Base64Utils.decodeFromString(base64Image);
+        //encode message into image and get encoded bytes
+        BufferedImage image = createBufferedImage(imageBinary);
+        byte[] RGBBytes = Steganography.extractRGBBytes(image);
+        Steganography.encodeMessage(RGBBytes, message);
+        byte[] encodedImage = bufferedImageToBytes(image, imageType);
+        return encodedImage;
+    }
+
+    /**
      * Method to encode a message into the least significant bits of an image
      * @param originalImage The original image rgb writeable raster array, modified to include message
      * @param message The message to be encoded
@@ -24,12 +42,7 @@ public class Steganography {
         int[] intArray = new int[charArray.length];
         for (int i = 0; i < charArray.length; i++) {
             intArray[i] = charArray[i];
-            //System.out.print(intArray[i]);
         }
-        //System.out.println();
-
-        //create new image
-        //byte[] modifiedImage = originalImage.clone();
 
         //check image is large enough
         if (intArray.length * 8 > originalImage.length) {
@@ -60,6 +73,7 @@ public class Steganography {
      * @param encodedImage the image rgb raster array with an encoded message
      * @return the encoded message as a string
      */
+    //TODO: only pop the length of the message. doing the whole image is slow
     public static String decodeMessage(byte[] encodedImage) {
         //StringBuilder to hold message
         StringBuilder messageBuilder = new StringBuilder();
@@ -68,7 +82,18 @@ public class Steganography {
         Queue<Integer> bitList = new LinkedList<Integer>();
 
         //iterate over all bytes in image
+        int zeroCounter = 0;
         for (int i = 0; i < encodedImage.length; i++) {
+            //if the last 8 LSB were zero then that's the null char, break
+            if(zeroCounter == 8) {
+                break;
+            }
+            int lsb = encodedImage[i] & 1;
+            if(lsb == 0) {
+                zeroCounter++;
+            } else {
+                zeroCounter = 0;
+            }
             bitList.add(encodedImage[i] & 1);
         }
 
@@ -88,9 +113,7 @@ public class Steganography {
         int[] newArray = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             newArray[i] = array[i];
-            //System.out.print(newArray[i]);
         }
-        //System.out.println();
 
         //convert bytes to characters
         for (int i = 0; i < byteList.size(); i++) {

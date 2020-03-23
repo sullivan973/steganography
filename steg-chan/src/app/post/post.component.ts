@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ThreadData } from '../thread-modal/thread-data';
+import { Post } from './post';
 
 @Component({
   selector: 'app-post',
@@ -7,7 +8,7 @@ import { ThreadData } from '../thread-modal/thread-data';
   styleUrls: ['./post.component.scss']
 })
 export class PostComponent implements OnInit {
-  @Input() postData : ThreadData;
+  @Input() postData : Post;
   constructor() { }
 
   ngOnInit() {

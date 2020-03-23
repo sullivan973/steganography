@@ -1,4 +1,4 @@
-package sec.info.stegchan.repository;
+package sec.info.stegchan.model;
 
 public class NewThreadData {
   private String title;

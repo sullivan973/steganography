@@ -12,14 +12,22 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  //fetches and returns all threads in database
   getAllThreads(): Observable<Thread[]> {
     return this.http.get<Thread[]>('http://localhost:8080/threads');
   }
 
+  //creates a new thread from the create thread form data
   createNewThread(formData: ThreadData): Observable<any> {
-    return this.http.post('http://localhost:8080/create/thread', formData)
+    return this.http.post('http://localhost:8080/create/thread', formData);
+  }
+  
+  //creates new post from the create post form data
+  createNewPost(formData: Post): Observable<any> {
+    return this.http.post('http://localhost:8080/create/post', formData);
   }
 
+  //gets a specific thread by id and returns all related posts, strings encoded
   getThread(id : string) : Observable<Post[]> {
     return this.http.get<Post[]>(`http://localhost:8080/thread/${id}`);
   }
