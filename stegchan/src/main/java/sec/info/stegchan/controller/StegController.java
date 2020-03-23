@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import sec.info.stegchan.model.NewPostData;
+import sec.info.stegchan.model.NewThreadData;
 import sec.info.stegchan.model.ThreadDetail;
 import sec.info.stegchan.model.Thumbnail;
 import sec.info.stegchan.repository.Thread;
@@ -46,21 +48,13 @@ public class StegController {
 
   @PostMapping("/create/thread")
   //newThreadData image comes in as a base64URI string, data:image/<type>;base64,<data>
-  //TODO: extract mime type and save in database
   public ResponseEntity createThread(@RequestBody NewThreadData newThreadData) {
     String[] base64Data = newThreadData.getImageBase64DataUrl().split(",");
     String imageType = base64Data[0].substring(base64Data[0].indexOf('/') + 1, base64Data[0].indexOf(';'));
-    //turn base64 data into binary
-    byte[] imageBinary = Base64Utils.decodeFromString(base64Data[1]);
     try {
-      //encode message into image and get encoded bytes
-      BufferedImage image = Steganography.createBufferedImage(imageBinary);
-      byte[] RGBBytes = Steganography.extractRGBBytes(image);
-      Steganography.encodeMessage(RGBBytes, newThreadData.getMessage());
-      byte[] encodedImage = Steganography.bufferedImageToBytes(image, imageType);
+      byte[] encodedImage = Steganography.encodeBase64(base64Data[1], newThreadData.getMessage(), imageType);
 
       //add new thread to database with encoded image
-      //we are saving rgbBytes to the database to avoid compression destroying the message
       Post post = new Post(encodedImage, imageType);
       List<Post> postList = new ArrayList<>();
       postList.add(post);
@@ -69,6 +63,31 @@ public class StegController {
 
       //this should cascade and create the post as well
       threadRepository.save(thread);
+      return ResponseEntity.status(HttpStatus.OK).body(null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+  }
+
+  @PostMapping("/create/post")
+  public ResponseEntity createPost(@RequestBody NewPostData newPostData) {
+    String[] base64Data = newPostData.getImage().split(",");
+    String imageType = base64Data[0].substring(base64Data[0].indexOf('/') + 1, base64Data[0].indexOf(';'));
+    try {
+      byte[] encodedImage = Steganography.encodeBase64(base64Data[1], newPostData.getMessage(), imageType);
+
+      //create new encoded post
+      Post post = new Post(encodedImage, imageType);
+      Optional<Thread> threadOptional = threadRepository.findById(newPostData.getThreadId());
+      //if thread doesn't exist
+      if(!threadOptional.isPresent()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Thread was not found in database");
+      }
+      post.setThread(threadOptional.get());
+
+      //this should cascade and add the post to the thread as well
+      postRepository.save(post);
       return ResponseEntity.status(HttpStatus.OK).body(null);
     } catch (IOException e) {
       e.printStackTrace();

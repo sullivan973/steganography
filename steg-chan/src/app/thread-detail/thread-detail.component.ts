@@ -9,15 +9,25 @@ import { Post } from 'src/app/post/post';
   styleUrls: ['./thread-detail.component.scss']
 })
 export class ThreadDetailComponent implements OnInit {
-  postList : Post[] = [];
+  postList: Post[] = [];
+  threadId: string;
+  showPostModal: boolean;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService
-  ) { }
+  ) { 
+    //dummy original post for loading
+    this.postList[0] = new Post('', null, +this.threadId, null, "Loading Thread...");
+  }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-    this.apiService.getThread(id).subscribe(
+    this.reloadPosts();
+  }
+
+  reloadPosts() {
+    this.showPostModal = false;
+    this.threadId = this.route.snapshot.paramMap.get('id');
+    this.apiService.getThread(this.threadId).subscribe(
       data => {
         this.postList = data;
       },
@@ -27,4 +37,7 @@ export class ThreadDetailComponent implements OnInit {
     );
   }
 
+  showNewPostModal(value: boolean) {
+    this.showPostModal = value;
+  }
 }

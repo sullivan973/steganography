@@ -1,0 +1,12 @@
+.post-box {
+  width: 500px;
+  height: 160px;
+  border: 1px solid #800;
+  margin: auto;
+  margin-bottom: 1em;
+}
+
+.post-box * {
+  float: left;
+  padding: 5px;
+}

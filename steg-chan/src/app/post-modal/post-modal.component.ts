@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Post } from '../post/post';
+import { ApiService } from 'src/api-service/api-service.service';
 
 @Component({
   selector: 'app-post-modal',
@@ -6,10 +8,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./post-modal.component.scss']
 })
 export class PostModalComponent implements OnInit {
-
-  constructor() { }
+  @Input() threadId: string;
+  @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
+  @Output() reloadPostsEvent: EventEmitter<boolean> = new EventEmitter();
+  postData: Post;
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
+    this.postData = new Post();
   }
 
+  hideModal() {
+    this.hideModalEvent.emit(false);
+  }
+
+  fileChange(event) {
+    var reader = new FileReader()
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onloadend = () => {
+      this.postData.image = reader.result as string;
+    };
+  }
+
+  onSubmit() {
+    this.postData.threadId = parseInt(this.threadId);
+    if(!isNaN(this.postData.threadId)) {
+      this.apiService.createNewPost(this.postData).subscribe(
+        () => {
+          this.reloadPostsEvent.emit(true);
+          this.hideModalEvent.emit(false);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+  }
 }
