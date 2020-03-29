@@ -4,11 +4,13 @@ public class ThreadDetail {
   private String title;
   private String image;
   private int postId;
+  private String message;
 
-  public ThreadDetail(String title, String image, int postId) {
+  public ThreadDetail(String title, String image, int postId, String message) {
     this.title = title;
     this.image = image;
     this.postId = postId;
+    this.message = message;
   }
 
   public String getTitle() {
@@ -33,5 +35,13 @@ public class ThreadDetail {
 
   public void setPostId(int postId) {
     this.postId = postId;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
   }
 }

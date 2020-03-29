@@ -4,12 +4,14 @@ public class NewThreadData {
   private String title;
   private String message;
   private String imageBase64DataUrl;
+  private String password;
 
   public NewThreadData() {}
-  public NewThreadData(String title, String message, String imageBase64DataUrl) {
+  public NewThreadData(String title, String message, String imageBase64DataUrl, String password) {
     this.title = title;
     this.message = message;
     this.imageBase64DataUrl = imageBase64DataUrl;
+    this.password = password;
   }
 
   public String getTitle() {
@@ -34,5 +36,13 @@ public class NewThreadData {
 
   public void setImageBase64DataUrl(String imageBase64DataUrl) {
     this.imageBase64DataUrl = imageBase64DataUrl;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

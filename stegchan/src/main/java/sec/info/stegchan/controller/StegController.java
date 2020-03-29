@@ -30,7 +30,7 @@ public class StegController {
   private PostRepository postRepository;
 
   @GetMapping("/threads")
-  public ResponseEntity<List<Thumbnail>> getThreads() throws IOException {
+  public ResponseEntity<List<Thumbnail>> getThreads() {
     List<Thumbnail> thumbnails = new ArrayList<>();
     Iterable<Thread> threadIterator = threadRepository.findAll();
     for (Thread thread : threadIterator) {
@@ -38,10 +38,6 @@ public class StegController {
       thumbnails.add(
               new Thumbnail(thread.getTitle(), Post.postToBase64URL(post), thread.getThreadId()
       ));
-      //for debug purposes
-      BufferedImage image = Steganography.createBufferedImage(thread.getPostList().get(0).getStegImage());
-      byte[] data = Steganography.extractRGBBytes(image);
-      String message = Steganography.decodeMessage(data);
     }
     return ResponseEntity.ok(thumbnails);
   }
@@ -58,7 +54,8 @@ public class StegController {
       Post post = new Post(encodedImage, imageType);
       List<Post> postList = new ArrayList<>();
       postList.add(post);
-      Thread thread = new Thread(newThreadData.getTitle(), postList);
+      //TODO: Hash password before saving in database
+      Thread thread = new Thread(newThreadData.getTitle(), postList, newThreadData.getPassword());
       post.setThread(thread);
 
       //this should cascade and create the post as well
@@ -98,7 +95,7 @@ public class StegController {
   //Returns the list of posts for thread with threadId = id
   //includes post id, the title for the first post, and the encoded image
   @GetMapping("/thread/{id}")
-  public ResponseEntity getThreadDetails (@PathVariable("id") int id) {
+  public ResponseEntity getThreadDetails(@PathVariable("id") int id) {
     Optional<Thread> threadOptional = threadRepository.findById(id);
     //if found in database
     if(threadOptional.isPresent()) {
@@ -106,7 +103,36 @@ public class StegController {
       List<ThreadDetail> threadDetails = new ArrayList<>();
       List<Post> postList = threadOptional.get().getPostList();
       for (Post post: postList) {
-        threadDetails.add(new ThreadDetail(null, Post.postToBase64URL(post), post.getPostId()));
+        threadDetails.add(new ThreadDetail(null, Post.postToBase64URL(post), post.getPostId(), null));
+      }
+      //add title into the first post for header post
+      threadDetails.get(0).setTitle(threadOptional.get().getTitle());
+      return ResponseEntity.status(HttpStatus.OK).body(threadDetails);
+    }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Thread with id: " + id + " was not found.");
+  }
+
+  @PostMapping("/thread/decode/{id}")
+  private ResponseEntity getDecodedThread(@PathVariable("id") int id, @RequestBody String password) {
+    Optional<Thread> threadOptional = threadRepository.findById(id);
+
+    if(threadOptional.isPresent()) {
+      //TODO: Verify Password Syntax
+      if(!password.equals(threadOptional.get().getPassword())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong Password");
+      }
+      //pack the posts into a list of images with post id
+      List<ThreadDetail> threadDetails = new ArrayList<>();
+      List<Post> postList = threadOptional.get().getPostList();
+      for (Post post: postList) {
+        //extract the message
+        String message = null;
+        try {
+          message = Steganography.decodeFromBinaries(post.getStegImage());
+        } catch (IOException e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        threadDetails.add(new ThreadDetail(null, Post.postToBase64URL(post), post.getPostId(), message));
       }
       //add title into the first post for header post
       threadDetails.get(0).setTitle(threadOptional.get().getTitle());

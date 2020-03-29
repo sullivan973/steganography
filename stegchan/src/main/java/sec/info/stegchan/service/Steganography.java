@@ -69,11 +69,22 @@ public class Steganography {
     }
 
     /**
-     * Decode a message out of an image
+     * Decodes a message out raw image Binaries
+     * @param imageBinary binaries from the database to decode
+     * @return message hidden in image
+     * @throws IOException if createBufferedImage fails
+     */
+    public static String decodeFromBinaries(byte[] imageBinary) throws IOException {
+        BufferedImage image = createBufferedImage(imageBinary);
+        byte[] data = extractRGBBytes(image);
+        return decodeMessage(data);
+    }
+
+    /**
+     * Decode a message out of a RGB image array
      * @param encodedImage the image rgb raster array with an encoded message
      * @return the encoded message as a string
      */
-    //TODO: only pop the length of the message. doing the whole image is slow
     public static String decodeMessage(byte[] encodedImage) {
         //StringBuilder to hold message
         StringBuilder messageBuilder = new StringBuilder();

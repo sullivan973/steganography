@@ -12,11 +12,12 @@ export class ThreadDetailComponent implements OnInit {
   postList: Post[] = [];
   threadId: string;
   showPostModal: boolean;
+  showDecodeModal: boolean;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService
   ) { 
-    //dummy original post for loading
+    //dummy original post for loading, + operator is cast to number
     this.postList[0] = new Post('', null, +this.threadId, null, "Loading Thread...");
   }
 
@@ -26,6 +27,7 @@ export class ThreadDetailComponent implements OnInit {
 
   reloadPosts() {
     this.showPostModal = false;
+    this.showDecodeModal = false;
     this.threadId = this.route.snapshot.paramMap.get('id');
     this.apiService.getThread(this.threadId).subscribe(
       data => {
@@ -37,7 +39,23 @@ export class ThreadDetailComponent implements OnInit {
     );
   }
 
+  renderDecoded(password: string) {
+    this.apiService.getDecodedThread(this.threadId, password).subscribe(
+      data => {
+        this.postList = data;
+      },
+      error => {
+        //some UI to inform user would be good
+        console.log(error);
+      }
+    )
+  }
+
   showNewPostModal(value: boolean) {
     this.showPostModal = value;
+  }
+
+  displayDecodeModal(value: boolean) {
+    this.showDecodeModal = value;
   }
 }
