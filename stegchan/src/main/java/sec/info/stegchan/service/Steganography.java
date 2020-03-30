@@ -10,6 +10,9 @@ import java.util.Queue;
 
 public class Steganography {
 
+    private static String[] KEYS = new String[] {"LIVING", "BELLIGERENT", "CHIN", "HEAP", "STEEP", "INTEREST", "SELF", "WREN",
+        "DEAFENING", "ANNOUNCE", "ILLEGAL", "PHYSICAL", "DOOR", "HARMONY", "HYDRANT", "WIDE"};
+
     /**
      * Method to encode a message into the least significant bits of an image
      * @param originalImage The original image rgb writeable raster array, modified to include message
@@ -169,5 +172,10 @@ public class Steganography {
             }
         }
         return message.toString();
+    }
+
+    private static String getKey(byte keyNum) {
+        int keyIndex = (int) keyNum;
+        return Steganography.KEYS[keyIndex];
     }
 }
