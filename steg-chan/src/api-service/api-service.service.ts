@@ -31,4 +31,8 @@ export class ApiService {
   getThread(id : string) : Observable<Post[]> {
     return this.http.get<Post[]>(`http://localhost:8080/thread/${id}`);
   }
+
+  getDecodedThread(id: string, password: string) : Observable<Post[]> {
+    return this.http.post<Post[]>(`http://localhost:8080/thread/decode/${id}`, password);
+  }
 }

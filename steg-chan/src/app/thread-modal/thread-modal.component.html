@@ -16,6 +16,11 @@
         <label for="upload">Upload an Image</label>
         <input type="file" name="upload" (change)="fileChange($event)"/>
       </div>
+
+      <div class="form-group">
+        <label for="password">Password lock thread</label>
+        <input type="text" name="password" [(ngModel)]="threadModal.password"/>
+      </div>
       <button type="submit" class="btn btn-success">Post!</button>
     </form>
   </div>

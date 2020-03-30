@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ThreadModalComponent } from './thread-modal/thread-modal.component';
 import { FormsModule }   from '@angular/forms';
 import { TitlePageComponent } from './title-page/title-page.component';
+import { DecodeModalComponent } from './decode-modal/decode-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TitlePageComponent } from './title-page/title-page.component';
     PostComponent,
     PostModalComponent,
     ThreadModalComponent,
-    TitlePageComponent
+    TitlePageComponent,
+    DecodeModalComponent
   ],
   imports: [
     BrowserModule,
