@@ -1,12 +1,21 @@
 <div class="modal-box">
   <h2>Enter Thread Password</h2>
   <div class="center">
-    <form class="form" (ngSubmit)="onSubmit()">
+    <form class="form" (ngSubmit)="onSubmit()" #passwordForm="ngForm">
       <div class="form-group">
-        <label for="message">Password</label>
-        <input type="text" name="message" [(ngModel)]="password"/>
+        <label for="password">Password</label>
+        <input id="password" type="text" name="password" [(ngModel)]="password"
+          required maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,50}$" #passwordRef="ngModel"/>
+        <div *ngIf="passwordRef.invalid && (passwordRef.dirty || passwordRef.touched)">
+          <div *ngIf="passwordRef.errors.required">
+            Password is required.
+          </div>
+          <div *ngIf="passwordRef.errors.pattern">
+            Password must be 8-50 characters, and contain at least one lowercase, uppercase, and number.
+          </div>
+        </div>
       </div>
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button [disabled]="!passwordForm.form.valid" type="submit" class="btn btn-success">Submit</button>
     </form>
   </div>
   <button class="link close-link" (click)='hideModal()'>[Close]</button>

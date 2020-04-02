@@ -11,10 +11,13 @@ export class ThreadModalComponent implements OnInit {
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
   @Output() reloadThreadsEvent: EventEmitter<boolean> = new EventEmitter();
   threadModal: ThreadData;
+  showAlert: boolean;
+  alertText: string;
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
     this.threadModal = new ThreadData();
+    this.showAlert = false;
   }
 
   hideModal() {
@@ -36,7 +39,9 @@ export class ThreadModalComponent implements OnInit {
         this.hideModalEvent.emit(false);
       },
       error => {
-        console.log(error);
+        this.alertText = error.error;
+        this.showAlert = true;
+        setTimeout(() => {this.showAlert = false}, 3000);
       }
     );
   }

@@ -21,9 +21,7 @@ export class DecodeModalComponent implements OnInit {
   }
 
   onSubmit() {
-    //TODO: Client Side validation of password
     this.decodePostsEvent.emit(this.password);
     this.hideModalEvent.emit(false);
   }
-
 }

@@ -12,10 +12,13 @@ export class PostModalComponent implements OnInit {
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
   @Output() reloadPostsEvent: EventEmitter<boolean> = new EventEmitter();
   postData: Post;
+  showAlert: boolean;
+  alertText: string;
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
     this.postData = new Post();
+    this.showAlert = false;
   }
 
   hideModal() {
@@ -39,7 +42,9 @@ export class PostModalComponent implements OnInit {
           this.hideModalEvent.emit(false);
         },
         error => {
-          console.log(error);
+          this.alertText = error.error;
+          this.showAlert = true;
+          setTimeout(() => {this.showAlert = false}, 3000);
         }
       );
     }
