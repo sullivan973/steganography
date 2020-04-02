@@ -13,6 +13,8 @@ export class ThreadDetailComponent implements OnInit {
   threadId: string;
   showPostModal: boolean;
   showDecodeModal: boolean;
+  showAlert: boolean;
+  alertText: string;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService
@@ -28,6 +30,7 @@ export class ThreadDetailComponent implements OnInit {
   reloadPosts() {
     this.showPostModal = false;
     this.showDecodeModal = false;
+    this.showAlert = false;
     this.threadId = this.route.snapshot.paramMap.get('id');
     this.apiService.getThread(this.threadId).subscribe(
       data => {
@@ -45,8 +48,10 @@ export class ThreadDetailComponent implements OnInit {
         this.postList = data;
       },
       error => {
-        //some UI to inform user would be good
-        console.log(error);
+        //body of error shown to the user
+        this.alertText = error.error;
+        this.showAlert = true;
+        setTimeout(() => {this.showAlert = false}, 3000);
       }
     )
   }

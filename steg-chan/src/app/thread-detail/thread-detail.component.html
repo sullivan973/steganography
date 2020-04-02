@@ -1,11 +1,16 @@
 <div class='center'>
   <div class='inline-items'>
-    <img [src]='postList[0].image' height=90 width=90/>
-    <h3 class='title-text' (click)='displayDecodeModal(true)'>{{postList[0].title}}</h3>
+    <img (click)='displayDecodeModal(true)' [src]='postList[0].image' height=90 width=90/>
+    <h3 class='title-text'>
+      {{postList[0].title}}
+    </h3>
     <app-decode-modal (hideModalEvent)='displayDecodeModal($event)' (decodePostsEvent)='renderDecoded($event)' *ngIf='showDecodeModal'></app-decode-modal>
   </div>
   <button class="link" (click)='showNewPostModal(true)'>[Create New Post]</button>
   <button class="link" routerLink="">[Back To Home Page]</button>
   <app-post-modal [threadId]='threadId' (reloadPostsEvent)='reloadPosts()' (hideModalEvent)='showNewPostModal($event)' *ngIf='showPostModal'></app-post-modal>
   <app-post *ngFor='let post of postList' [postData]=post></app-post>
+</div>
+<div class="alert" *ngIf="showAlert">
+  {{alertText}}
 </div>
