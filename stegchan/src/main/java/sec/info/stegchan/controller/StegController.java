@@ -73,8 +73,9 @@ public class StegController {
       List<Post> postList = new ArrayList<>();
       postList.add(post);
 
-      String hashedPassword = PasswordService.generateHash(newThreadData.getPassword());
-      Thread thread = new Thread(newThreadData.getTitle(), postList, hashedPassword);
+      String salt = PasswordService.generateSalt();
+      String hashedPassword = PasswordService.generateHash(salt + newThreadData.getPassword());
+      Thread thread = new Thread(newThreadData.getTitle(), postList, hashedPassword, salt);
       post.setThread(thread);
 
       //this should cascade and create the post as well
@@ -152,7 +153,8 @@ public class StegController {
       //Check password
       String hashedPassword = null;
       try {
-        hashedPassword = PasswordService.generateHash(password);
+        String saltedPassword = threadOptional.get().getSalt() + password;
+        hashedPassword = PasswordService.generateHash(saltedPassword);
         if(!hashedPassword.equals(threadOptional.get().getPassword())) {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password, try again");
         }

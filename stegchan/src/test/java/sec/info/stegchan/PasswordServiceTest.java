@@ -20,5 +20,27 @@ class PasswordServiceTest {
     assertEquals(output1, output2);
   }
 
+  //tests that the same password but salted differently will also be hashed differently
+  @Test
+  void samePasswordDifferentSalt() throws NoSuchAlgorithmException {
+    String salt1 = PasswordService.generateSalt();
+    String salt2 = PasswordService.generateSalt();
+    String password = "SuperBasicPassword";
+    String output1 = PasswordService.generateHash(salt1 + password);
+    String output2 = PasswordService.generateHash(salt2 + password);
+
+    assertNotEquals(output1, output2);
+  }
+
+  @Test
+  void samePasswordSameSalt() throws NoSuchAlgorithmException {
+    String salt1 = PasswordService.generateSalt();
+    String password = "SuperBasicPassword";
+    String output1 = PasswordService.generateHash(salt1 + password);
+    String output2 = PasswordService.generateHash(salt1 + password);
+
+    assertEquals(output1, output2);
+  }
+
   //testing for collisions is impossible, we will just trust SHA-512
 }
