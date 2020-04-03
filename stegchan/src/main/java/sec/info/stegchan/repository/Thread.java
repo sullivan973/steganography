@@ -16,12 +16,15 @@ public class Thread {
 
   private String password;
 
+  private String salt;
+
   public Thread() {}
 
-  public Thread(String title, List<Post> postList, String password) {
+  public Thread(String title, List<Post> postList, String password, String salt) {
     this.title = title;
     this.postList = postList;
     this.password = password;
+    this.salt = salt;
   }
 
   public Integer getThreadId() {
@@ -55,4 +58,8 @@ public class Thread {
   public void setPassword(String password) {
     this.password = password;
   }
+
+  public String getSalt() { return salt; }
+
+  public void setSalt(String salt) { this.salt = salt; }
 }
