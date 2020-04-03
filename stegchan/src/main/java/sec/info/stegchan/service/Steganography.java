@@ -2,7 +2,12 @@ package sec.info.stegchan.service;
 
 import org.springframework.util.Base64Utils;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.*;
@@ -26,8 +31,24 @@ public class Steganography {
         BufferedImage image = createBufferedImage(imageBinary);
         byte[] RGBBytes = Steganography.extractRGBBytes(image);
         Steganography.encodeMessage(RGBBytes, message);
+        //save jpegs as png so we can avoid compression problems
+        if(imageType.equals("jpeg")) {
+            imageType = "png";
+        }
         byte[] encodedImage = bufferedImageToBytes(image, imageType);
         return encodedImage;
+    }
+
+    /**
+     * Decodes a message out raw image Binaries. Wrapper decode method
+     * @param imageBinary binaries from the database to decode
+     * @return message hidden in image
+     * @throws IOException if createBufferedImage fails
+     */
+    public static String decodeFromBinaries(byte[] imageBinary) throws IOException {
+        BufferedImage image = createBufferedImage(imageBinary);
+        byte[] data = extractRGBBytes(image);
+        return decodeMessage(data);
     }
 
     /**
@@ -66,18 +87,6 @@ public class Steganography {
                 imageOffset++;
             }
         }
-    }
-
-    /**
-     * Decodes a message out raw image Binaries
-     * @param imageBinary binaries from the database to decode
-     * @return message hidden in image
-     * @throws IOException if createBufferedImage fails
-     */
-    public static String decodeFromBinaries(byte[] imageBinary) throws IOException {
-        BufferedImage image = createBufferedImage(imageBinary);
-        byte[] data = extractRGBBytes(image);
-        return decodeMessage(data);
     }
 
     /**
@@ -135,7 +144,7 @@ public class Steganography {
             messageBuilder.append(currentChar);
         }
 
-        System.out.println("\nDecoded message: " + messageBuilder.toString());
+        //System.out.println("\nDecoded message: " + messageBuilder.toString());
         return messageBuilder.toString();
     }
 
@@ -160,7 +169,7 @@ public class Steganography {
     }
 
     /**
-     *
+     * Coverts a bufferedImage back into Binaries
      * @param image Buffered image to convert to raw byte data
      * @param format informal image format, ie jpg, gif, png
      * @return raw byte data of image

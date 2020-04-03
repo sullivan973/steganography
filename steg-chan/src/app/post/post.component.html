@@ -1,4 +1,6 @@
 <div class="post-box">
   <img [src]="postData.image" height=150 width=150/>
-  <div *ngIf='postData.message'>{{postData.message}}</div>
+  <div class="message-text" *ngIf='postData.message'>
+    <p>{{postData.message}}</p>
+  </div>
 </div>

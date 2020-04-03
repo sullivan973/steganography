@@ -1,6 +1,5 @@
 package sec.info.stegchan.controller;
 
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,11 @@ import sec.info.stegchan.repository.Post;
 import sec.info.stegchan.repository.PostRepository;
 import sec.info.stegchan.repository.Thread;
 import sec.info.stegchan.repository.ThreadRepository;
+import sec.info.stegchan.service.PasswordService;
 import sec.info.stegchan.service.Steganography;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,14 +72,15 @@ public class StegController {
       Post post = new Post(encodedImage, imageType);
       List<Post> postList = new ArrayList<>();
       postList.add(post);
-      //TODO: Hash password before saving in database WITH SALT
-      Thread thread = new Thread(newThreadData.getTitle(), postList, newThreadData.getPassword());
+
+      String hashedPassword = PasswordService.generateHash(newThreadData.getPassword());
+      Thread thread = new Thread(newThreadData.getTitle(), postList, hashedPassword);
       post.setThread(thread);
 
       //this should cascade and create the post as well
       threadRepository.save(thread);
       return ResponseEntity.status(HttpStatus.OK).body(null);
-    } catch (IOException e) {
+    } catch (IOException | NoSuchAlgorithmException e) {
       e.printStackTrace();
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Thread, Try again");
@@ -147,9 +149,17 @@ public class StegController {
     Optional<Thread> threadOptional = threadRepository.findById(id);
 
     if(threadOptional.isPresent()) {
-      if(!password.equals(threadOptional.get().getPassword())) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+      //Check password
+      String hashedPassword = null;
+      try {
+        hashedPassword = PasswordService.generateHash(password);
+        if(!hashedPassword.equals(threadOptional.get().getPassword())) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password, try again");
+        }
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
       }
+
       //pack the posts into a list of images with post id
       List<ThreadDetail> threadDetails = new ArrayList<>();
       List<Post> postList = threadOptional.get().getPostList();

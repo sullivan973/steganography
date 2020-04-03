@@ -1,7 +1,5 @@
 package sec.info.stegchan.model;
 
-import java.sql.Blob;
-
 public class Thumbnail {
   private String title;
   private String image;
