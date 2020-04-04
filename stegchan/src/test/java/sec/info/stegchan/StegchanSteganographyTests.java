@@ -21,7 +21,7 @@ class StegchanSteganographyTests {
     @Test
     void encodingTest() {
         try {
-            File imageFile = new File("C:\\Users\\Thomas Sullivan\\Documents\\My Classes SP20\\Info Sec\\steganography\\stegchan\\src\\test\\java\\sec\\info\\stegchan\\test-images\\testImage.jpg");
+            File imageFile = new File("C:\\Users\\Sovie\\IdeaProjects\\steganography\\steganography\\stegchan\\src\\test\\java\\sec\\info\\stegchan\\test-images\\testImage.jpg");
             BufferedImage testImage = ImageIO.read(imageFile);
             byte[] data = ((DataBufferByte) testImage.getRaster().getDataBuffer()).getData();
             Steganography.encodeMessage(data, "Test message");
@@ -35,7 +35,7 @@ class StegchanSteganographyTests {
     @Test
     void encodingTest1() {
         try {
-            File imageFile = new File("C:\\Users\\Thomas Sullivan\\Documents\\My Classes SP20\\Info Sec\\steganography\\stegchan\\src\\test\\java\\sec\\info\\stegchan\\test-images\\testImage1.jpg");
+            File imageFile = new File("C:\\Users\\Sovie\\IdeaProjects\\steganography\\steganography\\stegchan\\src\\test\\java\\sec\\info\\stegchan\\test-images\\testImage1.jpg");
             BufferedImage testImage = ImageIO.read(imageFile);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             //need to extract RGB Raster as byte array so compression isn't messed up
@@ -47,7 +47,7 @@ class StegchanSteganographyTests {
             assertEquals("Down with the bourgeoisie", message);
 
             //testImage was mutated by the encoding so write to file to visually inspect it renders still
-            ImageIO.write(testImage, "jpg", new File("C:\\Users\\Thomas Sullivan\\Documents\\My Classes SP20\\Info Sec\\steganography\\stegchan\\src\\test\\java\\sec\\info\\stegchan\\test-images\\testOutput1.jpg") );
+            ImageIO.write(testImage, "jpg", new File("C:\\Users\\Sovie\\IdeaProjects\\steganography\\steganography\\stegchan\\src\\test\\java\\sec\\info\\stegchan\\test-images\\testOutput1.jpg") );
         } catch(Exception e){
             assertNull(e);
         }
@@ -65,5 +65,12 @@ class StegchanSteganographyTests {
         String message = "Mlal mq e mowr qwlceex.";
         String decoded = Steganography.vigenereDecode("TESTKEY", message);
         assertEquals("This is a test message.", decoded);
+    }
+
+    @Test
+    void keyFinderTest() {
+        byte testByte = (byte) 14;
+        String key = Steganography.getKey(testByte);
+        assertEquals("HYDRANT", key);
     }
 }

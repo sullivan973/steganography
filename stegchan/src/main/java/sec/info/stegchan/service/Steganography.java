@@ -61,8 +61,12 @@ public class Steganography {
      * @throws IllegalArgumentException image too small to encode message
      */
     public static void encodeMessage(byte[] originalImage, String message) throws IllegalArgumentException{
+        //encrypt message
+        String encryptionKey = getKey(originalImage[originalImage.length-5]);
+        System.out.println(encryptionKey);
+        String encryptedMessage = vigenereEncode(encryptionKey, message);
         //convert message into byteArray
-        char[] charArray = message.toCharArray();
+        char[] charArray = encryptedMessage.toCharArray();
         int[] intArray = new int[charArray.length];
         for (int i = 0; i < charArray.length; i++) {
             intArray[i] = charArray[i];
@@ -98,6 +102,11 @@ public class Steganography {
      * @return the encoded message as a string
      */
     public static String decodeMessage(byte[] encodedImage) {
+
+        //get vigenere key
+        String key = getKey(encodedImage[encodedImage.length-5]);
+        System.out.println(key);
+
         //StringBuilder to hold message
         StringBuilder messageBuilder = new StringBuilder();
 
@@ -132,6 +141,7 @@ public class Steganography {
             }
             byteList.add(currentByte);
         }
+
         Integer[] array = byteList.toArray(new Integer[byteList.size()]);
         int[] newArray = new int[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -147,8 +157,10 @@ public class Steganography {
             messageBuilder.append(currentChar);
         }
 
-        //System.out.println("\nDecoded message: " + messageBuilder.toString());
-        return messageBuilder.toString();
+        //decode
+        String message = vigenereDecode(key, messageBuilder.toString());
+
+        return message;
     }
 
     /**
@@ -219,8 +231,8 @@ public class Steganography {
         return message.toString();
     }
 
-    private static String getKey(byte keyNum) {
+    public static String getKey(byte keyNum) {
         int keyIndex = (int) keyNum;
-        return Steganography.KEYS[keyIndex];
+        return Steganography.KEYS[Math.abs(keyIndex % 16)];
     }
 }
