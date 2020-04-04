@@ -14,11 +14,17 @@ public class Thread {
   @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
   private List<Post> postList;
 
+  private String password;
+
+  private String salt;
+
   public Thread() {}
 
-  public Thread(String title, List<Post> postList) {
+  public Thread(String title, List<Post> postList, String password, String salt) {
     this.title = title;
     this.postList = postList;
+    this.password = password;
+    this.salt = salt;
   }
 
   public Integer getThreadId() {
@@ -44,4 +50,16 @@ public class Thread {
   public void setPostList(List<Post> postList) {
     this.postList = postList;
   }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getSalt() { return salt; }
+
+  public void setSalt(String salt) { this.salt = salt; }
 }

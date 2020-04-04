@@ -15,3 +15,53 @@ button.link {
   width: auto;
   text-align: center;
 }
+
+.modal-box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 400px;
+  height: auto;
+  padding: 10px;
+  border: solid;
+  border-width: 2px;
+  border-color: black;
+  background-color: #fff5d9;
+}
+
+.close-link {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.alert {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 auto;
+  width: 30%;
+  text-align: center;
+  color: black;
+  padding: 2ex;
+  font-size: 1.5em;
+  border: solid black;
+  border-radius: 10px;
+  z-index: 1;
+  background-color: crimson;
+  -webkit-animation: notification 3s;
+  animation: notification 3s;
+}
+
+@keyframes notification {
+  0%, 100% {
+    top: -100px;
+    opacity: 0;
+  }
+  20%, 80% {
+    top: 0;
+    opacity: 1;
+  }
+}

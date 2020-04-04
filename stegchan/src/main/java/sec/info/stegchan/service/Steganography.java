@@ -1,6 +1,13 @@
 package sec.info.stegchan.service;
 
+import org.springframework.util.Base64Utils;
+
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.*;
@@ -14,6 +21,40 @@ public class Steganography {
         "DEAFENING", "ANNOUNCE", "ILLEGAL", "PHYSICAL", "DOOR", "HARMONY", "HYDRANT", "WIDE"};
 
     /**
+     * Wrapper around Steg class. Embeds message into base64 image
+     * @param base64Image base64 original image to be encoded
+     * @param message message to be embedded in image
+     * @param imageType image type for used for compression
+     * @return byte array blob of the encoded image to be saved in the database
+     */
+    public static byte[] encodeBase64(String base64Image, String message, String imageType) throws IOException {
+        //turn base64 data into binary
+        byte[] imageBinary = Base64Utils.decodeFromString(base64Image);
+        //encode message into image and get encoded bytes
+        BufferedImage image = createBufferedImage(imageBinary);
+        byte[] RGBBytes = Steganography.extractRGBBytes(image);
+        Steganography.encodeMessage(RGBBytes, message);
+        //save jpegs as png so we can avoid compression problems
+        if(imageType.equals("jpeg")) {
+            imageType = "png";
+        }
+        byte[] encodedImage = bufferedImageToBytes(image, imageType);
+        return encodedImage;
+    }
+
+    /**
+     * Decodes a message out raw image Binaries. Wrapper decode method
+     * @param imageBinary binaries from the database to decode
+     * @return message hidden in image
+     * @throws IOException if createBufferedImage fails
+     */
+    public static String decodeFromBinaries(byte[] imageBinary) throws IOException {
+        BufferedImage image = createBufferedImage(imageBinary);
+        byte[] data = extractRGBBytes(image);
+        return decodeMessage(data);
+    }
+
+    /**
      * Method to encode a message into the least significant bits of an image
      * @param originalImage The original image rgb writeable raster array, modified to include message
      * @param message The message to be encoded
@@ -25,12 +66,7 @@ public class Steganography {
         int[] intArray = new int[charArray.length];
         for (int i = 0; i < charArray.length; i++) {
             intArray[i] = charArray[i];
-            //System.out.print(intArray[i]);
         }
-        //System.out.println();
-
-        //create new image
-        //byte[] modifiedImage = originalImage.clone();
 
         //check image is large enough
         if (intArray.length * 8 > originalImage.length) {
@@ -57,7 +93,7 @@ public class Steganography {
     }
 
     /**
-     * Decode a message out of an image
+     * Decode a message out of a RGB image array
      * @param encodedImage the image rgb raster array with an encoded message
      * @return the encoded message as a string
      */
@@ -69,7 +105,18 @@ public class Steganography {
         Queue<Integer> bitList = new LinkedList<Integer>();
 
         //iterate over all bytes in image
+        int zeroCounter = 0;
         for (int i = 0; i < encodedImage.length; i++) {
+            //if the last 8 LSB were zero then that's the null char, break
+            if(zeroCounter == 8) {
+                break;
+            }
+            int lsb = encodedImage[i] & 1;
+            if(lsb == 0) {
+                zeroCounter++;
+            } else {
+                zeroCounter = 0;
+            }
             bitList.add(encodedImage[i] & 1);
         }
 
@@ -89,9 +136,7 @@ public class Steganography {
         int[] newArray = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             newArray[i] = array[i];
-            //System.out.print(newArray[i]);
         }
-        //System.out.println();
 
         //convert bytes to characters
         for (int i = 0; i < byteList.size(); i++) {
@@ -102,7 +147,7 @@ public class Steganography {
             messageBuilder.append(currentChar);
         }
 
-        System.out.println("\nDecoded message: " + messageBuilder.toString());
+        //System.out.println("\nDecoded message: " + messageBuilder.toString());
         return messageBuilder.toString();
     }
 
@@ -127,7 +172,7 @@ public class Steganography {
     }
 
     /**
-     *
+     * Coverts a bufferedImage back into Binaries
      * @param image Buffered image to convert to raw byte data
      * @param format informal image format, ie jpg, gif, png
      * @return raw byte data of image

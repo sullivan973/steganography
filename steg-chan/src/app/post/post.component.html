@@ -1,1 +1,6 @@
-<p>post works!</p>
+<div class="post-box">
+  <img [src]="postData.image" height=150 width=150/>
+  <div class="message-text" *ngIf='postData.message'>
+    <p>{{postData.message}}</p>
+  </div>
+</div>

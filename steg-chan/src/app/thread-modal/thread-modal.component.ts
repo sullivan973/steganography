@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ThreadModal } from './thread-modal';
+import { ThreadData } from './thread-data';
 import { ApiService } from 'src/api-service/api-service.service';
 
 @Component({
@@ -10,11 +10,14 @@ import { ApiService } from 'src/api-service/api-service.service';
 export class ThreadModalComponent implements OnInit {
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
   @Output() reloadThreadsEvent: EventEmitter<boolean> = new EventEmitter();
-  threadModal: ThreadModal;
+  threadModal: ThreadData;
+  showAlert: boolean;
+  alertText: string;
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
-    this.threadModal = new ThreadModal();
+    this.threadModal = new ThreadData();
+    this.showAlert = false;
   }
 
   hideModal() {
@@ -36,7 +39,9 @@ export class ThreadModalComponent implements OnInit {
         this.hideModalEvent.emit(false);
       },
       error => {
-        console.log(error);
+        this.alertText = error.error;
+        this.showAlert = true;
+        setTimeout(() => {this.showAlert = false}, 3000);
       }
     );
   }

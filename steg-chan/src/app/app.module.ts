@@ -11,6 +11,8 @@ import { ApiService } from 'src/api-service/api-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreadModalComponent } from './thread-modal/thread-modal.component';
 import { FormsModule }   from '@angular/forms';
+import { TitlePageComponent } from './title-page/title-page.component';
+import { DecodeModalComponent } from './decode-modal/decode-modal.component';
 
 @NgModule({
   declarations: [
@@ -19,13 +21,15 @@ import { FormsModule }   from '@angular/forms';
     ThreadDetailComponent,
     PostComponent,
     PostModalComponent,
-    ThreadModalComponent
+    ThreadModalComponent,
+    TitlePageComponent,
+    DecodeModalComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

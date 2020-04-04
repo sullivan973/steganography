@@ -124,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "steg-chan"
+    }
+  },
+  "defaultProject": "steg-chan",
+  "cli": {
+    "analytics": false
+  }
 }
