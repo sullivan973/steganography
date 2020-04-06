@@ -17,6 +17,9 @@ import java.util.Queue;
 
 public class Steganography {
 
+    private static String[] KEYS = new String[] {"LIVING", "BELLIGERENT", "CHIN", "HEAP", "STEEP", "INTEREST", "SELF", "WREN",
+        "DEAFENING", "ANNOUNCE", "ILLEGAL", "PHYSICAL", "DOOR", "HARMONY", "HYDRANT", "WIDE"};
+
     /**
      * Wrapper around Steg class. Embeds message into base64 image
      * @param base64Image base64 original image to be encoded
@@ -58,8 +61,12 @@ public class Steganography {
      * @throws IllegalArgumentException image too small to encode message
      */
     public static void encodeMessage(byte[] originalImage, String message) throws IllegalArgumentException{
+        //encrypt message
+        String encryptionKey = getKey(originalImage[originalImage.length-5]);
+        System.out.println(encryptionKey);
+        String encryptedMessage = vigenereEncode(encryptionKey, message);
         //convert message into byteArray
-        char[] charArray = message.toCharArray();
+        char[] charArray = encryptedMessage.toCharArray();
         int[] intArray = new int[charArray.length];
         for (int i = 0; i < charArray.length; i++) {
             intArray[i] = charArray[i];
@@ -95,6 +102,11 @@ public class Steganography {
      * @return the encoded message as a string
      */
     public static String decodeMessage(byte[] encodedImage) {
+
+        //get vigenere key
+        String key = getKey(encodedImage[encodedImage.length-5]);
+        System.out.println(key);
+
         //StringBuilder to hold message
         StringBuilder messageBuilder = new StringBuilder();
 
@@ -129,6 +141,7 @@ public class Steganography {
             }
             byteList.add(currentByte);
         }
+
         Integer[] array = byteList.toArray(new Integer[byteList.size()]);
         int[] newArray = new int[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -144,8 +157,10 @@ public class Steganography {
             messageBuilder.append(currentChar);
         }
 
-        //System.out.println("\nDecoded message: " + messageBuilder.toString());
-        return messageBuilder.toString();
+        //decode
+        String message = vigenereDecode(key, messageBuilder.toString());
+
+        return message;
     }
 
     /**
@@ -179,5 +194,45 @@ public class Steganography {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(image, format, bos );
         return bos.toByteArray();
+    }
+
+    public static String vigenereEncode(String key, String message) {
+        char[] keyArray = key.toCharArray();
+        StringBuilder encodedMessage = new StringBuilder();
+        for (int i = 0; i < message.length(); i++) {
+            char messageChar = message.charAt(i);
+            if (Character.isAlphabetic(messageChar)) {
+                int keyNum = i % keyArray.length;
+                int keyShift = ((int) keyArray[keyNum]) - 65;
+                char newChar = (char) ((((int) Character.toUpperCase(messageChar) + keyShift - 65) % 26) + 65);
+                encodedMessage.append(Character.isUpperCase(messageChar) ? newChar : Character.toLowerCase(newChar));
+            } else {
+                encodedMessage.append(messageChar);
+            }
+
+        }
+        return encodedMessage.toString();
+    }
+
+    public static String vigenereDecode(String key, String encoded) {
+        char[] keyArray = key.toCharArray();
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i < encoded.length(); i++) {
+            char encodedChar = encoded.charAt(i);
+            if (Character.isAlphabetic(encodedChar)) {
+                int keyNum = i % keyArray.length;
+                int keyShift = ((int) keyArray[keyNum]) - 65;
+                char newChar = (char) ((((int) Character.toUpperCase(encodedChar) - keyShift + 26 - 65) % 26) + 65);
+                message.append(Character.isUpperCase(encodedChar) ? newChar : Character.toLowerCase(newChar));
+            } else {
+                message.append(encodedChar);
+            }
+        }
+        return message.toString();
+    }
+
+    public static String getKey(byte keyNum) {
+        int keyIndex = (int) keyNum;
+        return Steganography.KEYS[Math.abs(keyIndex % 16)];
     }
 }
