@@ -1,3 +1,5 @@
+//Author(s): Marley Stipich and Thomas Sullivan
+//Derived from: https://dzone.com/articles/storing-passwords-java-web
 package sec.info.stegchan.service;
 
 import java.security.MessageDigest;
