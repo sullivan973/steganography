@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
+//Author: Marie Pendley and Thomas Sullivan
 public class Steganography {
 
     private static String[] KEYS = new String[] {"LIVING", "BELLIGERENT", "CHIN", "HEAP", "STEEP", "INTEREST", "SELF", "WREN",
@@ -21,6 +21,7 @@ public class Steganography {
      * @param message message to be embedded in image
      * @param imageType image type for used for compression
      * @return byte array blob of the encoded image to be saved in the database
+     * @author Thomas Sullivan
      */
     public static byte[] encodeBase64(String base64Image, String message, String imageType) throws IOException {
         //turn base64 data into binary
@@ -42,6 +43,7 @@ public class Steganography {
      * @param imageBinary binaries from the database to decode
      * @return message hidden in image
      * @throws IOException if createBufferedImage fails
+     * @author Thomas Sullivan
      */
     public static String decodeFromBinaries(byte[] imageBinary) throws IOException {
         BufferedImage image = createBufferedImage(imageBinary);

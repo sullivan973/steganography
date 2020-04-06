@@ -1,4 +1,4 @@
-//Author(s): Cassidy Murphy
+//Author(s): Cassidy Murphy & Thomas Sullivan
 package sec.info.stegchan.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;

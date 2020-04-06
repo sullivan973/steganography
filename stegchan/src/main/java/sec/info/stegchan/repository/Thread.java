@@ -1,11 +1,10 @@
-//Author(s): Cassidy Murphy
+//Author(s): Thomas Sullivan & Cassidy Murphy
 package sec.info.stegchan.repository;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-//Author: Thomas Sullivan & Cassidy Murphy
 public class Thread {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

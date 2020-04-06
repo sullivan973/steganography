@@ -13,6 +13,7 @@ public class PasswordService {
   private static SecureRandom random = new SecureRandom();
 
   //generates hashed password using built in hashing alg. returns hex hash
+  //Authors: Marley Stipich and Thomas Sullivan
   public static String generateHash(String password) throws NoSuchAlgorithmException {
     StringBuilder passwordHash = new StringBuilder();
     MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
@@ -28,6 +29,7 @@ public class PasswordService {
   }
 
   //generates a new salt of length SALT_LENGTH using a CSPRNG
+  //Author: Cassidy Murhpy
   public static String generateSalt()
   {
     StringBuilder salt = new StringBuilder(SALT_LENGTH);
