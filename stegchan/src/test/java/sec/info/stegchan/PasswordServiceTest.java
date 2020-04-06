@@ -1,3 +1,4 @@
+//Author(s): Cassidy Murphy
 package sec.info.stegchan;
 
 import org.junit.jupiter.api.Test;

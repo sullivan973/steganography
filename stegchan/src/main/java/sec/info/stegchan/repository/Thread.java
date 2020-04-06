@@ -1,3 +1,4 @@
+//Author(s): Cassidy Murphy
 package sec.info.stegchan.repository;
 
 import javax.persistence.*;
