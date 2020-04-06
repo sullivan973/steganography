@@ -32,6 +32,7 @@ public class StegController {
   private PostRepository postRepository;
   private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,50}$";
 
+  //Author: Thomas Sullivan
   @GetMapping("/threads")
   public ResponseEntity<List<Thumbnail>> getThreads() {
     List<Thumbnail> thumbnails = new ArrayList<>();
@@ -45,6 +46,7 @@ public class StegController {
     return ResponseEntity.ok(thumbnails);
   }
 
+  //Author: Thomas Sullivan & Cassidy Murphy
   @PostMapping("/create/thread")
   //newThreadData image comes in as a base64URI string, data:image/<type>;base64,<data>
   public ResponseEntity createThread(@RequestBody NewThreadData newThreadData) {
@@ -87,6 +89,7 @@ public class StegController {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Thread, Try again");
   }
 
+  //Author: Thomas Sullivan
   @PostMapping("/create/post")
   public ResponseEntity createPost(@RequestBody NewPostData newPostData) {
     //check if the image looks like it should/exists
@@ -120,6 +123,7 @@ public class StegController {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to commit Post, Try again");
   }
 
+  //Author: Thomas Sullivan
   //Returns the list of posts for thread with threadId = id
   //includes post id, the title for the first post, and the encoded image
   @GetMapping("/thread/{id}")
@@ -140,6 +144,7 @@ public class StegController {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Thread with id: " + id + " was not found.");
   }
 
+  //Author: Thomas Sullivan & Cassidy Murphy
   @PostMapping("/thread/decode/{id}")
   private ResponseEntity getDecodedThread(@PathVariable("id") int id, @RequestBody String password) {
     //Test password syntax

@@ -6,6 +6,7 @@ import { ApiService } from 'src/api-service/api-service.service';
   templateUrl: './title-page.component.html',
   styleUrls: ['./title-page.component.scss']
 })
+//Author: Thomas Sullivan
 export class TitlePageComponent implements OnInit {
   showThreadModal: boolean;
   constructor(private apiService: ApiService) {

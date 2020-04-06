@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ThreadData } from '../thread-modal/thread-data';
 import { Post } from './post';
 
 @Component({
@@ -7,6 +6,7 @@ import { Post } from './post';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
+//Author: Thomas Sullivan
 export class PostComponent implements OnInit {
   @Input() postData : Post;
   constructor() { }

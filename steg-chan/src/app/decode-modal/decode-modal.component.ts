@@ -6,6 +6,7 @@ import { ApiService } from 'src/api-service/api-service.service';
   templateUrl: './decode-modal.component.html',
   styleUrls: ['./decode-modal.component.scss']
 })
+//Author: Thomas Sullivan
 export class DecodeModalComponent implements OnInit {
 
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();

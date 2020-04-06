@@ -7,6 +7,7 @@ import { ApiService } from 'src/api-service/api-service.service';
   templateUrl: './post-modal.component.html',
   styleUrls: ['./post-modal.component.scss']
 })
+//Author: Thomas Sullivan
 export class PostModalComponent implements OnInit {
   @Input() threadId: string;
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();

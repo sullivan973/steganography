@@ -6,6 +6,7 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.*;
 
 @Entity
+//Author: Thomas Sullivan
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

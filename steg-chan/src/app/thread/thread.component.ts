@@ -6,7 +6,7 @@ import { Thread } from './thread';
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.scss']
 })
-
+//Author: Thomas Sullivan
 export class ThreadComponent implements OnInit {  
   @Input() threadData: Thread;
   constructor() { }

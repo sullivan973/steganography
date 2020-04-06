@@ -7,6 +7,7 @@ import { ApiService } from 'src/api-service/api-service.service';
   templateUrl: './thread-modal.component.html',
   styleUrls: ['./thread-modal.component.scss']
 })
+// Author: Thomas Sullivan
 export class ThreadModalComponent implements OnInit {
   @Output() hideModalEvent: EventEmitter<boolean> = new EventEmitter();
   @Output() reloadThreadsEvent: EventEmitter<boolean> = new EventEmitter();

@@ -1,5 +1,5 @@
 package sec.info.stegchan.model;
-
+//Author: Thomas Sullivan
 public class Thumbnail {
   private String title;
   private String image;

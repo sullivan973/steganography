@@ -1,5 +1,5 @@
 package sec.info.stegchan.model;
-
+//Author: Thomas Sullivan
 public class NewPostData {
   private String image;
   private int threadId;

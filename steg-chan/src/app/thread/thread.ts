@@ -1,3 +1,4 @@
+//Author: Thomas Sullivan
 export class Thread {
 
   constructor(

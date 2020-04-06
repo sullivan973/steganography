@@ -8,6 +8,7 @@ import { ThreadData } from 'src/app/thread-modal/thread-data';
 @Injectable({
   providedIn: 'root'
 })
+//Author: Thomas Sullivan
 export class ApiService {
 
   constructor(private http: HttpClient) { }

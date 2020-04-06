@@ -8,6 +8,7 @@ import { Post } from 'src/app/post/post';
   templateUrl: './thread-detail.component.html',
   styleUrls: ['./thread-detail.component.scss']
 })
+//Author: Thomas Sullivan
 export class ThreadDetailComponent implements OnInit {
   postList: Post[] = [];
   threadId: string;

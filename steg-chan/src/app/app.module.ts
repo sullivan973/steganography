@@ -14,6 +14,7 @@ import { FormsModule }   from '@angular/forms';
 import { TitlePageComponent } from './title-page/title-page.component';
 import { DecodeModalComponent } from './decode-modal/decode-modal.component';
 
+//Author: Thomas Sullivan
 @NgModule({
   declarations: [
     AppComponent,

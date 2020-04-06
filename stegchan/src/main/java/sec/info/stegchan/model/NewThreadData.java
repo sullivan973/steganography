@@ -1,5 +1,5 @@
 package sec.info.stegchan.model;
-
+//Author: Thomas Sullivan
 public class NewThreadData {
   private String title;
   private String message;
