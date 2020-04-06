@@ -54,6 +54,7 @@ public class Steganography {
      * @param originalImage The original image rgb writeable raster array, modified to include message
      * @param message The message to be encoded
      * @throws IllegalArgumentException image too small to encode message
+     * @author Marie Pendley
      */
     public static void encodeMessage(byte[] originalImage, String message) throws IllegalArgumentException{
         //encrypt message
@@ -95,6 +96,7 @@ public class Steganography {
      * Decode a message out of a RGB image array
      * @param encodedImage the image rgb raster array with an encoded message
      * @return the encoded message as a string
+     * @author Marie Pendley
      */
     public static String decodeMessage(byte[] encodedImage) {
 
@@ -191,6 +193,13 @@ public class Steganography {
         return bos.toByteArray();
     }
 
+    /**
+     * Takes a key and a message, converts the message to vigenere-encoded ciphertext
+     * @param key the String to encode on
+     * @param message the plaintext message to encode
+     * @return encoded ciphertext
+     * @author Marie Pendley
+     */
     public static String vigenereEncode(String key, String message) {
         char[] keyArray = key.toCharArray();
         StringBuilder encodedMessage = new StringBuilder();
@@ -209,6 +218,13 @@ public class Steganography {
         return encodedMessage.toString();
     }
 
+    /**
+     * Takes a key and an encoded message, converts the ciphertext to decoded plaintext
+     * @param key the String to decode on
+     * @param encoded the ciphertext message to decode
+     * @return decoded plaintext
+     * @author Marie Pendley
+     */
     public static String vigenereDecode(String key, String encoded) {
         char[] keyArray = key.toCharArray();
         StringBuilder message = new StringBuilder();
@@ -226,6 +242,12 @@ public class Steganography {
         return message.toString();
     }
 
+    /**
+     * Determines which key to use for vigenere encoding and decoding
+     * @param keyNum the byte of the image to use for keyFinding
+     * @return the key to use for encoding
+     * @author Marie Pendley
+     */
     public static String getKey(byte keyNum) {
         int keyIndex = (int) keyNum;
         return Steganography.KEYS[Math.abs(keyIndex % 16)];

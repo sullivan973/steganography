@@ -18,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class StegchanSteganographyTests {
+
+    /**
+     * Test overall encoding, looking for exceptions
+     * @author Marie Pendley
+     */
     @Test
     void encodingTest() {
         try {
@@ -32,6 +37,11 @@ class StegchanSteganographyTests {
         }
     }
 
+    /**
+     * Test overall encoding and decoding. Looks for exceptions.
+     * Resulting image must be visually inspected.
+     * @author Marie Pendley
+     */
     @Test
     void encodingTest1() {
         try {
@@ -53,6 +63,11 @@ class StegchanSteganographyTests {
         }
     }
 
+    /**
+     * Test vigenere encoding when provided plaintext and key.
+     * Compared text derived using manual vigenere encoding.
+     * @author Marie Pendley
+     */
     @Test
     void vigenereEncodeTest() {
         String message = "This is a test message.";
@@ -60,6 +75,11 @@ class StegchanSteganographyTests {
         assertEquals("Mlal mq e mowr qwlceex.", encoded);
     }
 
+    /**
+     * Test vigenere decoding when provided ciphertext and key.
+     * Compared text derived using manual vigenere encoding.
+     * @author Marie Pendley
+     */
     @Test
     void vigenereDecodeTest() {
         String message = "Mlal mq e mowr qwlceex.";
@@ -67,6 +87,11 @@ class StegchanSteganographyTests {
         assertEquals("This is a test message.", decoded);
     }
 
+    /**
+     * Test key retrieval given a single byte.
+     * Byte would normally be selected from an image.
+     * @author Marie Pendley
+     */
     @Test
     void keyFinderTest() {
         byte testByte = (byte) 14;
