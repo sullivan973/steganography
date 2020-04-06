@@ -1,3 +1,4 @@
+//Author(s): Cassidy Murphy
 package sec.info.stegchan.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
