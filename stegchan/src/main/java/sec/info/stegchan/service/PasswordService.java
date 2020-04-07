@@ -1,5 +1,4 @@
 //Author(s): Cassidy Murphy, Marley Stipich and Thomas Sullivan
-//Derived from: https://dzone.com/articles/storing-passwords-java-web
 package sec.info.stegchan.service;
 
 import java.security.MessageDigest;
@@ -14,6 +13,7 @@ public class PasswordService {
 
   //generates hashed password using built in hashing alg. returns hex hash
   //Authors: Marley Stipich and Thomas Sullivan
+  //Derived from: https://dzone.com/articles/storing-passwords-java-web
   public static String generateHash(String password) throws NoSuchAlgorithmException {
     StringBuilder passwordHash = new StringBuilder();
     MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
@@ -29,7 +29,7 @@ public class PasswordService {
   }
 
   //generates a new salt of length SALT_LENGTH using a CSPRNG
-  //Author: Cassidy Murhpy
+  //Author: Cassidy Murhpy, original code
   public static String generateSalt()
   {
     StringBuilder salt = new StringBuilder(SALT_LENGTH);
